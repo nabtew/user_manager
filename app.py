@@ -6,9 +6,9 @@ import sys
 import os
 import maya.OpenMayaUI as omui
 from shiboken6 import wrapInstance
-from working import ui as userManage
+import ui as userManage
 import importlib
-from working import user_manager_utils as manageUtils
+import user_manager_utils as manageUtils
 
 importlib.reload(userManage)
 importlib.reload(manageUtils)
