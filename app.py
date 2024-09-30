@@ -1,11 +1,10 @@
-from PySide6 import QtWidgets 
-from PySide6 import QtCore 
-from PySide6 import QtGui
-from PySide6 import QtUiTools
+from PyQt5 import QtWidgets 
+from PyQt5 import QtCore 
+from PyQt5 import QtGui
 import sys
 import os
-import maya.OpenMayaUI as omui
-from shiboken6 import wrapInstance
+#import maya.OpenMayaUI as omui
+from shiboken2 import wrapInstance
 import ui as userManage
 import importlib
 import user_manager_utils as manageUtils
@@ -17,9 +16,9 @@ import logging
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.NullHandler())
 moduleDir = os.path.dirname(sys.modules[__name__].__file__)
-maya_ptr = omui.MQtUtil.mainWindow()
+#maya_ptr = omui.MQtUtil.mainWindow()
 json_data_path = "%s\\Json_user.json" %moduleDir
-ptr = wrapInstance(int(maya_ptr), QtWidgets.QWidget)
+#ptr = wrapInstance(int(maya_ptr), QtWidgets.QWidget)
 
 class UserManager(QtWidgets.QMainWindow):
     def __init__(self, *args, **kwargs):
@@ -75,7 +74,7 @@ class UserManager(QtWidgets.QMainWindow):
             print("none value to delete")
 
 
-def run():
+"""def run():
     global ui
     try:
         ui.close()
@@ -83,10 +82,10 @@ def run():
         pass
 
     toolUi = UserManager(parent=ptr)
-    toolUi.show()
+    toolUi.show()"""
 
 
-"""def show():
+def show():
     logger.info('Run in standalone\n')
     app = QtWidgets.QApplication.instance()
     if not app:
@@ -94,8 +93,7 @@ def run():
     myApp = UserManager()
     myApp.show()
     sys.exit(app.exec_())
-    """
+    
 
-"""if __name__ == '__main__':
-    run()
-"""
+if __name__ == '__main__':
+    show()
