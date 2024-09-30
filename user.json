@@ -1,0 +1,15 @@
+{
+    "Ai": [
+        "machineD", 
+        "machineE"
+    ], 
+    "Pia": [
+        "chaiyachat.c", 
+        "test_com"
+    ], 
+    "TA": [
+        "machineA", 
+        "machineB", 
+        "machineC", 
+    ]
+}
