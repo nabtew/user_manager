@@ -6,7 +6,6 @@ and allows the user to add or remove values from the lists.
 
 Dependencies:
     - PyQt5
-    - shiboken2
     - user_manager_utils (utility file for handling JSON data)
 """
 
@@ -28,21 +27,6 @@ moduleDir = os.path.dirname(sys.modules[__name__].__file__)
 json_data_path = "%s\\Json_user.json" %moduleDir
 
 class user_manage_uir(QtWidgets.QMainWindow):
-    """
-    user_manage_uir is the main class for manage the UI from 'ui.py' and variable.
-
-    It provides functionality to:
-    - Load user data from a JSON file
-    - Display keys and values in QListWidgets
-    - Add or delete the valuse
-
-    Method:
-    display_keys():
-        Display the keys on QListWidgets from JFON file.
-    display_values():
-        Display the values on QListWidgets with selected key.
-
-    """
 
     def __init__(self, *args, **kwargs):
 
@@ -111,18 +95,6 @@ class user_manage_uir(QtWidgets.QMainWindow):
             manage_utils.delete_json(json_data_path, self.data_json, current_item, deValume)
         else:
             logger.error("none value to delete")
-
-
-"""def run():
-    global ui
-    try:
-        ui.close()
-    except:
-        pass
-
-    toolUi = user_manage_uir(parent=ptr)
-    toolUi.show()"""
-
 
 def show():
     logger.info('Run in standalone\n')

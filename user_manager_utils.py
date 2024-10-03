@@ -40,21 +40,3 @@ def delete_json(json_data_path, data_json, current_item, deValume):
     with open(json_data_path, "w", encoding="utf-8") as json_file: # open .json 
         json.dump(data_json, json_file, ensure_ascii=False, indent=4)
    
-
-"""
-def write_json(): # A = ชื่อที่ user addเข้ามา, B = listwidget, C = ชื่อที่ user ต้องการลบ
-    pass
-
-    add_dic = Dic_json["{}"].format(A) = "{}".format(B) # เพิ่มข้อมูลลง Dictionaries
-    del_dic = Dic_json.pop("{}".formate(C))
-
-
-car = {
-  "brand": "Ford",
-  "model": "Mustang",
-  "year": 1964
-}
-
-x = list(car.keys())
-print(x[0])
-"""
