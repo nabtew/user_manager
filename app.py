@@ -11,12 +11,9 @@ Dependencies:
 """
 
 from PyQt5 import QtWidgets 
-from PyQt5 import QtCore 
-from PyQt5 import QtGui
 import logging
 import sys
 import os
-from shiboken2 import wrapInstance
 import ui as user_manage_ui
 import importlib
 import user_manager_utils as manage_utils
@@ -109,7 +106,6 @@ class user_manage_uir(QtWidgets.QMainWindow):
         current_item = self.ui.listName_box.currentItem().text()
         deValume = self.ui.listAssets_box.currentItem().text()
         current_row = self.ui.listAssets_box.currentRow()
-        print(current_row)
         if current_item and deValume:
             self.ui.listAssets_box.takeItem(current_row)
             manage_utils.delete_json(json_data_path, self.data_json, current_item, deValume)
