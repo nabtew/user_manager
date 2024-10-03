@@ -4,24 +4,23 @@ import json
 
 moduleDir = os.path.dirname(sys.modules[__name__].__file__)
 
-def load_json(json_data_path):
-    with open(json_data_path, "r") as Jfile:
-        data = json.load(Jfile)
+def read_json(json_data_path):
+    with open(json_data_path, "r") as json_file:
+        data = json.load(json_file)
     return data
 
-def name_data(data):
-    data_list = list(data.keys())
-    return data_list
+def keys_data(data_json):
+    keys_list = list(data_json.keys())
+    return keys_list
 
-def list_widget(data):
-    widget_list = list(data.values())
-    
-    return widget_list
+def values_data(data_json):
+    values_list = list(data_json.values())
+    return values_list
 
-def writeJson(json_data_path, crItem, mut, valueName):
-    if crItem in mut:
-        if valueName:
-            mut[crItem].append(valueName)
+def write_json(json_data_path, current_item, data_json, value_name_text):
+    if current_item in data_json:
+        if value_name_text:
+            data_json[current_item].append(value_name_text)
 
         else:
             return
@@ -29,17 +28,17 @@ def writeJson(json_data_path, crItem, mut, valueName):
         return
 
     with open(json_data_path, "w", encoding="utf-8") as json_file: # open .json 
-        json.dump(mut, json_file, ensure_ascii=False, indent=4)
+        json.dump(data_json, json_file, ensure_ascii=False, indent=4)
 
-def delJson(json_data_path, mut, crItem, deValume):
-    if crItem in mut:
-        mut[crItem].remove(deValume)
+def delete_json(json_data_path, data_json, current_item, deValume):
+    if current_item in data_json:
+        data_json[current_item].remove(deValume)
 
     else:
-        mut[crItem] = [deValume]
+        data_json[current_item] = [deValume]
 
     with open(json_data_path, "w", encoding="utf-8") as json_file: # open .json 
-        json.dump(mut, json_file, ensure_ascii=False, indent=4)
+        json.dump(data_json, json_file, ensure_ascii=False, indent=4)
    
 
 """
