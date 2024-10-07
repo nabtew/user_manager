@@ -28,8 +28,6 @@ class UserManagerUi(QtWidgets.QMainWindow):
         self.ui.setupUi(self)
         
         self.data_json = utils.read_json(json_data_path) # load data from .json file
-        self.data_key = utils.keys_data(self.data_json) # Keys from Dic
-        self.data_values = utils.values_data(self.data_json) # Values from Dic
 
         # Display keys and values in QlistWidget
         self.display_keys()
@@ -41,9 +39,8 @@ class UserManagerUi(QtWidgets.QMainWindow):
         self.ui.add_button.clicked.connect(self.user_add_value)
         self.ui.delete_button.clicked.connect(self.user_del_volume)
         
-   
     def display_keys(self):# list name of the keys from .json show on QlistWidget
-        for key in self.data_key:
+        for key in self.data_json.keys():
             self.ui.listName_box.addItem("{}".format(key))
 
     def display_values(self):#
@@ -59,7 +56,7 @@ class UserManagerUi(QtWidgets.QMainWindow):
     def user_add_value(self):
         current_item = self.ui.listName_box.currentItem().text()
         value_name_text = self.ui.addName_box.text()
-        list_of_data_values = [item for sublist in self.data_values for item in sublist]
+        list_of_data_values = [item for sublist in self.data_json.values() for item in sublist]
         check_value_exists = False
 
         if value_name_text != "":

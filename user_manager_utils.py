@@ -9,14 +9,6 @@ def read_json(json_data_path):
         data = json.load(json_file)
     return data
 
-def keys_data(data_json):
-    keys_list = list(data_json.keys())
-    return keys_list
-
-def values_data(data_json):
-    values_list = list(data_json.values())
-    return values_list
-
 def update_key_json(json_data_path, current_item, data_json, value_name_text):
     if current_item in data_json:
         if value_name_text:
