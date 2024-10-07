@@ -1,24 +1,14 @@
-"""
-This module manages the main UI for tool.
-
-It loads data from a JSON file, displays it in a QListwidget, 
-and allows the user to add or remove values from the lists.
-
-Dependencies:
-    - PyQt5
-    - user_manager_utils (utility file for handling JSON data)
-"""
-
-from PyQt5 import QtWidgets 
+from PyQt5 import QtWidgets
+from PyQt5.QtWidgets import QMessageBox
 import logging
 import sys
 import os
 import ui as user_manage_ui
 import importlib
-import user_manager_utils as manage_utils
+import user_manager_utils as utils
 
 importlib.reload(user_manage_ui)
-importlib.reload(manage_utils)
+importlib.reload(utils)
 
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.NullHandler())
@@ -26,23 +16,25 @@ logger.addHandler(logging.NullHandler())
 moduleDir = os.path.dirname(sys.modules[__name__].__file__)
 json_data_path = "%s\\Json_user.json" %moduleDir
 
-class user_manage_uir(QtWidgets.QMainWindow):
+class UserManagerUi(QtWidgets.QMainWindow):
 
     def __init__(self, *args, **kwargs):
 
         # setup the window
-        super(user_manage_uir, self).__init__(*args, **kwargs)
+        super(UserManagerUi, self).__init__(*args, **kwargs)
 
         # read the ui
         self.ui = user_manage_ui.Ui_User_manager()
         self.ui.setupUi(self)
         
-        self.data_json = manage_utils.read_json(json_data_path) # load data from .json file
-        self.data_key = manage_utils.keys_data(self.data_json) # Keys from Dic
-        self.data_values = manage_utils.values_data(self.data_json) # Values from Dic
+        self.data_json = utils.read_json(json_data_path) # load data from .json file
+        self.data_key = utils.keys_data(self.data_json) # Keys from Dic
+        self.data_values = utils.values_data(self.data_json) # Values from Dic
 
         # Display keys and values in QlistWidget
         self.display_keys()
+
+    def ui_connect(self):
         self.ui.listName_box.itemClicked.connect(self.display_values)
         # add the value by user
         self.ui.add_button.clicked.connect(self.user_add_value)
@@ -75,24 +67,25 @@ class user_manage_uir(QtWidgets.QMainWindow):
                     check_value_exists = True
                     break
                 
-            if check_value_exists == True:
-                logger.error("text name already exists, pls type a new ones")
+            if check_value_exists:
+                key_found = next((key for key, values in self.data_json.items() if value_name_text in values), None)
+                QMessageBox.warning(self, "Warning", f"text name '{value_name_text}' already exists in '{key_found}', please type a new one")
                 
             else:
                 self.ui.listAssets_box.addItem(value_name_text)
-                manage_utils.write_json(json_data_path, current_item, self.data_json, value_name_text)
-                        
+                utils.update_key_json(json_data_path, current_item, self.data_json, value_name_text)
+            
         else:
-            logger.error("no item to add, pls type any name in the box")
+            QMessageBox.warning(self, "Error", "No item to add, please type any name in the box")
             pass
     
     def user_del_volume(self):
         current_item = self.ui.listName_box.currentItem().text()
-        deValume = self.ui.listAssets_box.currentItem().text()
+        delete_value = self.ui.listAssets_box.currentItem().text()
         current_row = self.ui.listAssets_box.currentRow()
-        if current_item and deValume:
+        if current_item and delete_value:
             self.ui.listAssets_box.takeItem(current_row)
-            manage_utils.delete_json(json_data_path, self.data_json, current_item, deValume)
+            utils.delete_value_json(json_data_path, self.data_json, current_item, delete_value)
         else:
             logger.error("none value to delete")
 
@@ -101,7 +94,7 @@ def show():
     app = QtWidgets.QApplication.instance()
     if not app:
         app = QtWidgets.QApplication(sys.argv)
-    myApp = user_manage_uir()
+    myApp = UserManagerUi()
     myApp.show()
     sys.exit(app.exec_())
     

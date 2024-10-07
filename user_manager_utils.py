@@ -17,7 +17,7 @@ def values_data(data_json):
     values_list = list(data_json.values())
     return values_list
 
-def write_json(json_data_path, current_item, data_json, value_name_text):
+def update_key_json(json_data_path, current_item, data_json, value_name_text):
     if current_item in data_json:
         if value_name_text:
             data_json[current_item].append(value_name_text)
@@ -30,12 +30,12 @@ def write_json(json_data_path, current_item, data_json, value_name_text):
     with open(json_data_path, "w", encoding="utf-8") as json_file: # open .json 
         json.dump(data_json, json_file, ensure_ascii=False, indent=4)
 
-def delete_json(json_data_path, data_json, current_item, deValume):
+def delete_value_json(json_data_path, data_json, current_item, delete_value):
     if current_item in data_json:
-        data_json[current_item].remove(deValume)
+        data_json[current_item].remove(delete_value)
 
     else:
-        data_json[current_item] = [deValume]
+        data_json[current_item] = [delete_value]
 
     with open(json_data_path, "w", encoding="utf-8") as json_file: # open .json 
         json.dump(data_json, json_file, ensure_ascii=False, indent=4)
