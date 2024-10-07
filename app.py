@@ -3,11 +3,11 @@ from PyQt5.QtWidgets import QMessageBox
 import logging
 import sys
 import os
-import ui as user_manage_ui
+import ui as manage_ui
 import importlib
 import user_manager_utils as utils
 
-importlib.reload(user_manage_ui)
+importlib.reload(manage_ui)
 importlib.reload(utils)
 
 logger = logging.getLogger(__name__)
@@ -24,7 +24,7 @@ class UserManagerUi(QtWidgets.QMainWindow):
         super(UserManagerUi, self).__init__(*args, **kwargs)
 
         # read the ui
-        self.ui = user_manage_ui.Ui_User_manager()
+        self.ui = manage_ui.Ui_User_manager()
         self.ui.setupUi(self)
         
         self.data_json = utils.read_json(json_data_path) # load data from .json file
@@ -82,13 +82,17 @@ class UserManagerUi(QtWidgets.QMainWindow):
     
     def user_del_volume(self):
         current_item = self.ui.listName_box.currentItem().text()
-        delete_value = self.ui.listAssets_box.currentItem().text()
+        delete_value = self.ui.listAssets_box.currentItem()
+        if delete_value:
+            delete_value = delete_value.text()
         current_row = self.ui.listAssets_box.currentRow()
+
         if current_item and delete_value:
             self.ui.listAssets_box.takeItem(current_row)
             utils.delete_value_json(json_data_path, self.data_json, current_item, delete_value)
-        else:
-            logger.error("none value to delete")
+            
+        elif delete_value == None:
+            QMessageBox.warning(self, "Error", "none value to delete")
 
 def show():
     logger.info('Run in standalone\n')
