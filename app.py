@@ -33,6 +33,7 @@ class UserManagerUi(QtWidgets.QMainWindow):
 
         # Display keys and values in QlistWidget
         self.display_keys()
+        self.ui_connect()
 
     def ui_connect(self):
         self.ui.listName_box.itemClicked.connect(self.display_values)
