@@ -74,7 +74,7 @@ class UserManagerUi(QtWidgets.QMainWindow):
     def user_add_value(self):
         current_item = self.ui.listName_box.currentItem().text()
         value_name_text = self.ui.addName_box.text()
-        list_of_data_values = next((item for sublist in self.data_json.values() for item in sublist), None)
+        list_of_data_values = [item for sublist in self.data_json.values() for item in sublist]
         check_value_exists = False
 
         if value_name_text != "":
@@ -107,7 +107,6 @@ class UserManagerUi(QtWidgets.QMainWindow):
         if current_item and delete_value:
             self.ui.listAssets_box.takeItem(current_row)
             utils.delete_value_json(json_data_path, self.data_json, current_item, delete_value)
-            self.visible_key()
 
         elif delete_value == None:
             QMessageBox.warning(self, "Error", "none value to delete")
