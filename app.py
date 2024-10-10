@@ -1,6 +1,6 @@
-from PySide6 import QtWidgets
-from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QMessageBox
+from PySide2 import QtWidgets
+from PySide2.QtCore import Qt
+from PySide2.QtWidgets import QMessageBox
 import logging
 import sys
 import os
@@ -33,15 +33,16 @@ class UserManagerUi(QtWidgets.QMainWindow):
         self.display_keys()
         self.ui_connect()
         self.visible_key()
-        self.ui.checkBox.clicked.connect(self.check_box)
 
     def ui_connect(self):
         self.ui.listName_box.itemClicked.connect(self.display_values)
         # add the value by user
         self.ui.add_button.clicked.connect(self.user_add_value)
         self.ui.delete_button.clicked.connect(self.user_del_volume)
-        self.ui.search_button.clicked.connect(self.search_key)
-
+        self.ui.search_box.textChanged.connect(self.search_key)
+        self.ui.checkBox.clicked.connect(self.check_box)
+        self.ui.checkBox.clicked.connect(self.search_key)
+                
     def check_box(self):
         check_bool = self.ui.checkBox.isChecked()
         if check_bool:
@@ -114,29 +115,45 @@ class UserManagerUi(QtWidgets.QMainWindow):
             QMessageBox.warning(self, "Error", "none value to delete")
     
     def search_key(self):
-        key_name_search = self.ui.search_box.text()
-        key_found = utils.find_key(self.data_json, key_name_search)
-        if key_name_search == key_found:
-            self.ui.listName_box.clearSelection()
-            matching_items = self.ui.listName_box.findItems(key_name_search, Qt.MatchExactly)
-            if matching_items:
-                self.ui.listName_box.setCurrentItem(matching_items[0])
-                self.display_values()
+        key_name_search = self.ui.search_box.text().lower()
+        self.ui.listName_box.clear()
+        check_box = self.ui.checkBox.isChecked()
 
-            else:
-                pass
+        if key_name_search:
+            if check_box:
+                for item in self.data_json.keys():
+                    if key_name_search in item.lower():
+                        self.ui.listName_box.addItem(item)
+
+            elif not check_box:
+                for item in self.data_json.keys():
+                    if key_name_search in item.lower():
+                        self.ui.listName_box.addItem(item)
+                self.visible_key()
+
+        elif not key_name_search and not check_box:
+            self.ui.listName_box.clear()
+            self.display_keys()
+            self.visible_key()
+        
+        elif not key_name_search and check_box:
+            self.display_keys()
+
 
     def visible_key(self):
         show_all_data = utils.show_all(self.data_json)
-        if show_all_data != []:
+        self.visible_item = []
 
+        if show_all_data != []:
             for none_value_key in show_all_data:
                 matching_items = self.ui.listName_box.findItems(none_value_key, Qt.MatchExactly)
+                self.visible_item.append(none_value_key)
                 if matching_items:
                     row = self.ui.listName_box.row(matching_items[0])
                     self.ui.listName_box.takeItem(row)
                 else:
                     pass
+        return self.visible_item if self.visible_item else []
             
 def show():
     logger.info('Run in standalone\n')
@@ -145,7 +162,7 @@ def show():
         app = QtWidgets.QApplication(sys.argv)
     myApp = UserManagerUi()
     myApp.show()
-    sys.exit(app.exec()) #exec_ will be remove in the future, so use "exec()"
+    sys.exit(app.exec_())
     
 
 if __name__ == '__main__':
