@@ -46,10 +46,12 @@ class UserManagerUi(QtWidgets.QMainWindow):
         check_bool = self.ui.checkBox.isChecked()
         if check_bool:
             self.ui.listName_box.clear()
+            self.ui.listAssets_box.clear()
             self.display_keys()
 
         else:
             self.ui.listName_box.clear()
+            self.ui.listAssets_box.clear()
             self.display_keys()
             self.visible_key()
 
